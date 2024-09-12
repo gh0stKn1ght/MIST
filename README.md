@@ -20,3 +20,4 @@ The usage is very simple: run `python launcher.py` and follow instructions.
 
 To login into Discord with Discord token see instructions in the 'login_with_token' file.
 ### Warning: you will always need to build .exe file on a Windows machine with installed dependencies!
+### Warning (1): the developer condemns any illegal actions and is not responsible for the actions of users, all code is provided for educational purposes only.
