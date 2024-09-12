@@ -16,4 +16,6 @@ MIST is a python-based toolkit that includes:
  2. Install PIP
  3. Run installer.sh
 # Usage
- The usage is very simple: run `python launcher.py` and follow instructions.
+The usage is very simple: run `python launcher.py` and follow instructions.
+
+To login into Discord with Discord token see instructions in the 'login_with_token' file.
