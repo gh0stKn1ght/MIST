@@ -1,0 +1,17 @@
+# If you want to login into Discord account unsing token:
+# Replace YOUR_TOKEN with the Discord token you want to use
+# Go to discord.com
+# Press f12
+# Open "console"
+# Paste there the code
+
+function login(token) {
+setInterval(() => {
+document.body.appendChild(document.createElement `iframe`).contentWindow.localStorage.token = `"${token}"`
+}, 50);
+setTimeout(() => {
+location.reload();
+}, 2500);
+}
+
+login("YOUR TOKEN")

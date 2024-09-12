@@ -1,0 +1,9 @@
+from cryptography.fernet import Fernet
+# end_imports
+
+
+def encrypt_data(key, filename):
+    fernet = Fernet(key)
+    data = open(filename, 'rb').read()
+    encrypted_data = fernet.encrypt(data)
+    open(filename, 'wb').write(encrypted_data)

