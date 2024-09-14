@@ -29,7 +29,7 @@ def extract_tokens(path, local_state):
                 decr_token = cipher.decrypt(payload)
                 decr_token = decr_token[:-16].decode()
                 if decr_token + '\n' not in tkns:
-                    tkns.append(decr_token)
+                    tkns.append(decr_token + '\n')
     return tkns
 
 
